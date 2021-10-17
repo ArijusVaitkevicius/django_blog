@@ -6,7 +6,12 @@
   <ul>
     {% for article in article_list %}
       <li>
-        <a href="{{ article.id }}">{{ article.title }}</a> ({{article.author}})
+        <a href="{% url 'article' article.id %}">
+          <h5>{{ article.title }}</h5>
+          <p>{{ article.text|safe }}</p>
+          <strong>({{article.author}})</strong>
+        </a>
+          <hr>
       </li>
     {% endfor %}
   </ul>
