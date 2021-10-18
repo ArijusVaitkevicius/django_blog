@@ -8,4 +8,14 @@
     <strong>{{ article.author }}</strong>
     </div>
     <hr>
+    <h4>Comments:</h4>
+    {% if article.comments.all %}
+        {% for com in article.comments.all %}
+          <hr>
+          <strong>{{ com.commentator_name }}, {{ com.commentator_email }}</strong>, <em>{{ com.date_created}}</em>
+          <p>{{ com.content }}</p>
+        {% endfor %}
+    {% else %}
+    <p>The order has no comments.</p>
+    {% endif %}
 {% endblock %}

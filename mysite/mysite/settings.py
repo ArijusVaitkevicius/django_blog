@@ -155,3 +155,4 @@ TINYMCE_DEFAULT_CONFIG = {
     'statusbar': True,
     }
 
+LOGIN_REDIRECT_URL = '/'

@@ -15,3 +15,15 @@ class Article(models.Model):
     class Meta:
         verbose_name = "Article"
         verbose_name_plural = "Articles"
+
+
+class ArticleComment(models.Model):
+    article = models.ForeignKey('Article', on_delete=models.SET_NULL, null=True, blank=True, related_name='comments')
+    commentator_name = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    commentator_email = models.CharField('Email', max_length=200, null=True, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    content = models.TextField('Comment', max_length=2000)
+
+    class Meta:
+        verbose_name = 'Comment'
+        verbose_name_plural = 'Comments'
