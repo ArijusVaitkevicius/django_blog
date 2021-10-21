@@ -11,6 +11,10 @@
           <p>{{ article.text|safe }}</p>
           <strong>({{article.author}})</strong>
         </a>
+        {% if article.author == user %}
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'article-update' article.id %}">Update</a>
+            <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'article-delete' article.id %}">Delete</a>
+        {% endif %}
           <hr>
       </li>
     {% endfor %}

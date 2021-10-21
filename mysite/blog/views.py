@@ -1,10 +1,10 @@
-from django.views import generic
 from .models import Article
-from django.shortcuts import render, get_object_or_404
-from django.shortcuts import redirect
-from django.contrib.auth.forms import User
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views import generic
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
+from django.contrib.auth.forms import User
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
 def index(request):
@@ -23,6 +23,42 @@ class ArticlesListView(generic.ListView):
 def article(request, article_id):
     single_article = get_object_or_404(Article, pk=article_id)
     return render(request, 'article.html', {'article': single_article})
+
+
+class NewArticleCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Article
+    fields = ['title', 'text']
+    success_url = "/blog/articles/"
+    template_name = 'article_form.html'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+
+class ArticleUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+    model = Article
+    fields = ['title', 'text']
+    success_url = "/blog/articles/"
+    template_name = 'article_form.html'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        cur_article = self.get_object()
+        return self.request.user == cur_article.author
+
+
+class ArticleDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+    model = Article
+    success_url = "/blog/articles/"
+    template_name = 'article_delete.html'
+
+    def test_func(self):
+        cur_article = self.get_object()
+        return self.request.user == cur_article.author
 
 
 @csrf_protect
