@@ -10,6 +10,7 @@
           <h5>{{ article.title }}</h5>
           <p>{{ article.text|safe }}</p>
           <strong>({{article.author}})</strong>
+          <p>({{ article.comments_total }} comments)</p>
         </a>
         {% if article.author == user %}
             <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'article-update' article.id %}">Update</a>

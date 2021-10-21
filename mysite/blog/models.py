@@ -16,6 +16,11 @@ class Article(models.Model):
         verbose_name = "Article"
         verbose_name_plural = "Articles"
 
+    @property
+    def comments_total(self):
+        all_comments = ArticleComment.objects.filter(article=self.id)
+        return len(all_comments)
+
 
 class ArticleComment(models.Model):
     article = models.ForeignKey('Article', on_delete=models.SET_NULL, null=True, blank=True, related_name='comments')
